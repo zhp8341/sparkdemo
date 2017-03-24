@@ -22,7 +22,7 @@ public class SparkStreamHDFS {
         SparkConf conf = new SparkConf().setAppName("SparkStreamHDFS").setMaster("spark://hadoop1:7077");
         JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(15));
         System.out.println(jssc);
-        //创建监听文件流
+        //创建监听文件流 hdfs://hadoop1:8020/spark/sparkwordCounts/input 目录下的文件
         JavaDStream<String> lines=jssc.textFileStream("hdfs://hadoop1:8020/spark/sparkwordCounts/input");
 
         JavaDStream<String> words = lines.flatMap(new FlatMapFunction<String, String>() {

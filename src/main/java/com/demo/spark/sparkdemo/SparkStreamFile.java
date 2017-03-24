@@ -15,16 +15,16 @@ import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import scala.Tuple2;
 
+
 public class SparkStreamFile {
 
     public static void main(String[] args) {
         SparkConf conf = new SparkConf().setAppName("SparkStreamFile").setMaster("local[2]");
         //SparkConf conf = new SparkConf().setAppName("SparkStreamFile1111").setMaster("spark://hadoop1:7077").set("spark.cores.max", "4");
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(15));
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(15));//每隔15s
         System.out.println(jssc);
-        // 创建监听文件流
-        
-         JavaDStream<String> lines=jssc.textFileStream("/Users/huipeizhu/Documents/sparkdata/input/");
+        // 创建监听文件流 监控该目录下是否有新的文件进来，如果有新文件产生 每隔15s（Durations.seconds(15)）秒后计算
+         JavaDStream<String> lines=jssc.textFileStream("/Users/huipeizhu/Documents/sparkdata/input/");  
         //JavaReceiverInputDStream<String> lines = jssc.socketTextStream("localhost", 9999);
         JavaDStream<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
 
@@ -51,6 +51,7 @@ public class SparkStreamFile {
         
         wordCounts.print();
 
+        //保存到目录下
          wordCounts.dstream().saveAsTextFiles("/Users/huipeizhu/Documents/sparkdata/output", "countWord");
 
         jssc.start();
