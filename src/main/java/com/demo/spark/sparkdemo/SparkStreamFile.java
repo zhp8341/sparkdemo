@@ -2,11 +2,9 @@
 package com.demo.spark.sparkdemo;
 
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.List;
 
 import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
@@ -26,13 +24,12 @@ public class SparkStreamFile {
         // 创建监听文件流 监控该目录下是否有新的文件进来，如果有新文件产生 每隔15s（Durations.seconds(15)）秒后计算
          JavaDStream<String> lines=jssc.textFileStream("/Users/huipeizhu/Documents/sparkdata/input/");  
         //JavaReceiverInputDStream<String> lines = jssc.socketTextStream("localhost", 9999);
-        JavaDStream<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
-
-            @Override
-            public Iterator<String> call(String x) {
-                return Arrays.asList(x.split(" ")).iterator();
-            }
+        JavaDStream<String> words = lines.flatMap(x -> {
+             String[] strs=x.split(",");
+             List<String>  list=Arrays.asList(strs);
+            return list.iterator();
         });
+         
         // Count each word in each batch
         JavaPairDStream<String, Integer> pairs = words.mapToPair(new PairFunction<String, String, Integer>() {
 
@@ -41,12 +38,9 @@ public class SparkStreamFile {
                 return new Tuple2<>(s, 1);
             }
         });
-        JavaPairDStream<String, Integer> wordCounts = pairs.reduceByKey(new Function2<Integer, Integer, Integer>() {
-
-            @Override
-            public Integer call(Integer i1, Integer i2) {
-                return i1 + i2;
-            }
+        JavaPairDStream<String, Integer> wordCounts = pairs.reduceByKey((i1, i2) -> {
+            System.out.println(i1);
+            return i1 + i2;
         });
         
         wordCounts.print();

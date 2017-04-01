@@ -27,12 +27,12 @@ import scala.Tuple2;
 
 public class SparkSteamingKafka {
     public static void main(String[] args) throws InterruptedException {
-        String brokers = "master2:6667";
-        String topics = "topic1";
+        String brokers = "hadoop1:9092";
+        String topics = "spark_test";
         SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("streaming word count");
         JavaSparkContext sc = new JavaSparkContext(conf);
         sc.setLogLevel("WARN");
-        JavaStreamingContext ssc = new JavaStreamingContext(sc, Durations.seconds(1));
+        JavaStreamingContext ssc = new JavaStreamingContext(sc, Durations.seconds(5));
 
         Collection<String> topicsSet = new HashSet<>(Arrays.asList(topics.split(",")));
         //kafka相关参数，必要！缺了会报错
@@ -45,7 +45,7 @@ public class SparkSteamingKafka {
         kafkaParams.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         //Topic分区
         Map<TopicPartition, Long> offsets = new HashMap<>();
-        offsets.put(new TopicPartition("topic1", 0), 2L); 
+        offsets.put(new TopicPartition("spark_test", 0), 2L); 
         //通过KafkaUtils.createDirectStream(...)获得kafka数据，kafka相关参数由kafkaParams指定
         JavaInputDStream<ConsumerRecord<Object,Object>> lines = KafkaUtils.createDirectStream(
                 ssc,
