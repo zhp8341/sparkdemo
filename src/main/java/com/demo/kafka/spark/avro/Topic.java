@@ -10,7 +10,7 @@ import java.util.EnumSet;
  * Created by Administrator on 2017/4/1.
  */
 public enum Topic {
-    BINLOGTO("binlogto", new BinlogTO());
+    BINLOGTO("yangtuo-t_order-UPDATE", new BinlogTO());
 
     public final String topicName;
     public final SpecificRecordBase topicType;

@@ -10,14 +10,15 @@ import org.apache.avro.specific.SpecificData;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -3277518442018743113L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"BinlogTO\",\"namespace\":\"com.yt.otter.canal.protocol.avro\",\"fields\":[{\"name\":\"opTiem\",\"type\":\"string\"},{\"name\":\"opType\",\"type\":\"string\"},{\"name\":\"schemaName\",\"type\":\"string\"},{\"name\":\"tableName\",\"type\":\"string\"},{\"name\":\"primary\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"changeColumnMap\",\"type\":{\"type\":\"map\",\"values\":{\"type\":\"record\",\"name\":\"ColumnChange\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"value\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"preValue\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"mysqlType\",\"type\":\"string\"}]}},\"default\":null},{\"name\":\"postChangeContent\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"ColumnContent\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"isKey\",\"type\":\"boolean\"},{\"name\":\"isNull\",\"type\":\"boolean\"},{\"name\":\"value\",\"type\":\"string\"},{\"name\":\"mysqlType\",\"type\":\"string\"}]}}}]}");
+  private static final long serialVersionUID = 1183671210801855046L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"BinlogTO\",\"namespace\":\"com.yt.otter.canal.protocol.avro\",\"fields\":[{\"name\":\"opTiem\",\"type\":\"string\"},{\"name\":\"opType\",\"type\":\"string\"},{\"name\":\"schemaName\",\"type\":\"string\"},{\"name\":\"tableName\",\"type\":\"string\"},{\"name\":\"primary\",\"type\":\"string\"},{\"name\":\"primaryValue\",\"type\":\"string\"},{\"name\":\"changeColumnMap\",\"type\":[{\"type\":\"map\",\"values\":{\"type\":\"record\",\"name\":\"ColumnChange\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"value\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"preValue\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"mysqlType\",\"type\":\"string\"}]}},\"null\"],\"default\":null},{\"name\":\"postChangeContent\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"ColumnContent\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"isKey\",\"type\":\"boolean\"},{\"name\":\"isNull\",\"type\":\"boolean\"},{\"name\":\"value\",\"type\":\"string\"},{\"name\":\"mysqlType\",\"type\":\"string\"}]}}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   @Deprecated public java.lang.CharSequence opTiem;
   @Deprecated public java.lang.CharSequence opType;
   @Deprecated public java.lang.CharSequence schemaName;
   @Deprecated public java.lang.CharSequence tableName;
   @Deprecated public java.lang.CharSequence primary;
+  @Deprecated public java.lang.CharSequence primaryValue;
   @Deprecated public java.util.Map<java.lang.CharSequence,com.yt.otter.canal.protocol.avro.ColumnChange> changeColumnMap;
   @Deprecated public java.util.List<com.yt.otter.canal.protocol.avro.ColumnContent> postChangeContent;
 
@@ -35,15 +36,17 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
    * @param schemaName The new value for schemaName
    * @param tableName The new value for tableName
    * @param primary The new value for primary
+   * @param primaryValue The new value for primaryValue
    * @param changeColumnMap The new value for changeColumnMap
    * @param postChangeContent The new value for postChangeContent
    */
-  public BinlogTO(java.lang.CharSequence opTiem, java.lang.CharSequence opType, java.lang.CharSequence schemaName, java.lang.CharSequence tableName, java.lang.CharSequence primary, java.util.Map<java.lang.CharSequence,com.yt.otter.canal.protocol.avro.ColumnChange> changeColumnMap, java.util.List<com.yt.otter.canal.protocol.avro.ColumnContent> postChangeContent) {
+  public BinlogTO(java.lang.CharSequence opTiem, java.lang.CharSequence opType, java.lang.CharSequence schemaName, java.lang.CharSequence tableName, java.lang.CharSequence primary, java.lang.CharSequence primaryValue, java.util.Map<java.lang.CharSequence,com.yt.otter.canal.protocol.avro.ColumnChange> changeColumnMap, java.util.List<com.yt.otter.canal.protocol.avro.ColumnContent> postChangeContent) {
     this.opTiem = opTiem;
     this.opType = opType;
     this.schemaName = schemaName;
     this.tableName = tableName;
     this.primary = primary;
+    this.primaryValue = primaryValue;
     this.changeColumnMap = changeColumnMap;
     this.postChangeContent = postChangeContent;
   }
@@ -57,8 +60,9 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
     case 2: return schemaName;
     case 3: return tableName;
     case 4: return primary;
-    case 5: return changeColumnMap;
-    case 6: return postChangeContent;
+    case 5: return primaryValue;
+    case 6: return changeColumnMap;
+    case 7: return postChangeContent;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -72,8 +76,9 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
     case 2: schemaName = (java.lang.CharSequence)value$; break;
     case 3: tableName = (java.lang.CharSequence)value$; break;
     case 4: primary = (java.lang.CharSequence)value$; break;
-    case 5: changeColumnMap = (java.util.Map<java.lang.CharSequence,com.yt.otter.canal.protocol.avro.ColumnChange>)value$; break;
-    case 6: postChangeContent = (java.util.List<com.yt.otter.canal.protocol.avro.ColumnContent>)value$; break;
+    case 5: primaryValue = (java.lang.CharSequence)value$; break;
+    case 6: changeColumnMap = (java.util.Map<java.lang.CharSequence,com.yt.otter.canal.protocol.avro.ColumnChange>)value$; break;
+    case 7: postChangeContent = (java.util.List<com.yt.otter.canal.protocol.avro.ColumnContent>)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -159,6 +164,22 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
   }
 
   /**
+   * Gets the value of the 'primaryValue' field.
+   * @return The value of the 'primaryValue' field.
+   */
+  public java.lang.CharSequence getPrimaryValue() {
+    return primaryValue;
+  }
+
+  /**
+   * Sets the value of the 'primaryValue' field.
+   * @param value the value to set.
+   */
+  public void setPrimaryValue(java.lang.CharSequence value) {
+    this.primaryValue = value;
+  }
+
+  /**
    * Gets the value of the 'changeColumnMap' field.
    * @return The value of the 'changeColumnMap' field.
    */
@@ -227,6 +248,7 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
     private java.lang.CharSequence schemaName;
     private java.lang.CharSequence tableName;
     private java.lang.CharSequence primary;
+    private java.lang.CharSequence primaryValue;
     private java.util.Map<java.lang.CharSequence,com.yt.otter.canal.protocol.avro.ColumnChange> changeColumnMap;
     private java.util.List<com.yt.otter.canal.protocol.avro.ColumnContent> postChangeContent;
 
@@ -261,13 +283,17 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
         this.primary = data().deepCopy(fields()[4].schema(), other.primary);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.changeColumnMap)) {
-        this.changeColumnMap = data().deepCopy(fields()[5].schema(), other.changeColumnMap);
+      if (isValidValue(fields()[5], other.primaryValue)) {
+        this.primaryValue = data().deepCopy(fields()[5].schema(), other.primaryValue);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.postChangeContent)) {
-        this.postChangeContent = data().deepCopy(fields()[6].schema(), other.postChangeContent);
+      if (isValidValue(fields()[6], other.changeColumnMap)) {
+        this.changeColumnMap = data().deepCopy(fields()[6].schema(), other.changeColumnMap);
         fieldSetFlags()[6] = true;
+      }
+      if (isValidValue(fields()[7], other.postChangeContent)) {
+        this.postChangeContent = data().deepCopy(fields()[7].schema(), other.postChangeContent);
+        fieldSetFlags()[7] = true;
       }
     }
 
@@ -297,13 +323,17 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
         this.primary = data().deepCopy(fields()[4].schema(), other.primary);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.changeColumnMap)) {
-        this.changeColumnMap = data().deepCopy(fields()[5].schema(), other.changeColumnMap);
+      if (isValidValue(fields()[5], other.primaryValue)) {
+        this.primaryValue = data().deepCopy(fields()[5].schema(), other.primaryValue);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.postChangeContent)) {
-        this.postChangeContent = data().deepCopy(fields()[6].schema(), other.postChangeContent);
+      if (isValidValue(fields()[6], other.changeColumnMap)) {
+        this.changeColumnMap = data().deepCopy(fields()[6].schema(), other.changeColumnMap);
         fieldSetFlags()[6] = true;
+      }
+      if (isValidValue(fields()[7], other.postChangeContent)) {
+        this.postChangeContent = data().deepCopy(fields()[7].schema(), other.postChangeContent);
+        fieldSetFlags()[7] = true;
       }
     }
 
@@ -503,6 +533,45 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
     }
 
     /**
+      * Gets the value of the 'primaryValue' field.
+      * @return The value.
+      */
+    public java.lang.CharSequence getPrimaryValue() {
+      return primaryValue;
+    }
+
+    /**
+      * Sets the value of the 'primaryValue' field.
+      * @param value The value of 'primaryValue'.
+      * @return This builder.
+      */
+    public com.yt.otter.canal.protocol.avro.BinlogTO.Builder setPrimaryValue(java.lang.CharSequence value) {
+      validate(fields()[5], value);
+      this.primaryValue = value;
+      fieldSetFlags()[5] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'primaryValue' field has been set.
+      * @return True if the 'primaryValue' field has been set, false otherwise.
+      */
+    public boolean hasPrimaryValue() {
+      return fieldSetFlags()[5];
+    }
+
+
+    /**
+      * Clears the value of the 'primaryValue' field.
+      * @return This builder.
+      */
+    public com.yt.otter.canal.protocol.avro.BinlogTO.Builder clearPrimaryValue() {
+      primaryValue = null;
+      fieldSetFlags()[5] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'changeColumnMap' field.
       * @return The value.
       */
@@ -516,9 +585,9 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.yt.otter.canal.protocol.avro.BinlogTO.Builder setChangeColumnMap(java.util.Map<java.lang.CharSequence,com.yt.otter.canal.protocol.avro.ColumnChange> value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.changeColumnMap = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -527,7 +596,7 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'changeColumnMap' field has been set, false otherwise.
       */
     public boolean hasChangeColumnMap() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -537,7 +606,7 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.yt.otter.canal.protocol.avro.BinlogTO.Builder clearChangeColumnMap() {
       changeColumnMap = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -555,9 +624,9 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.yt.otter.canal.protocol.avro.BinlogTO.Builder setPostChangeContent(java.util.List<com.yt.otter.canal.protocol.avro.ColumnContent> value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.postChangeContent = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -566,7 +635,7 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'postChangeContent' field has been set, false otherwise.
       */
     public boolean hasPostChangeContent() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -576,7 +645,7 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.yt.otter.canal.protocol.avro.BinlogTO.Builder clearPostChangeContent() {
       postChangeContent = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -589,8 +658,9 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
         record.schemaName = fieldSetFlags()[2] ? this.schemaName : (java.lang.CharSequence) defaultValue(fields()[2]);
         record.tableName = fieldSetFlags()[3] ? this.tableName : (java.lang.CharSequence) defaultValue(fields()[3]);
         record.primary = fieldSetFlags()[4] ? this.primary : (java.lang.CharSequence) defaultValue(fields()[4]);
-        record.changeColumnMap = fieldSetFlags()[5] ? this.changeColumnMap : (java.util.Map<java.lang.CharSequence,com.yt.otter.canal.protocol.avro.ColumnChange>) defaultValue(fields()[5]);
-        record.postChangeContent = fieldSetFlags()[6] ? this.postChangeContent : (java.util.List<com.yt.otter.canal.protocol.avro.ColumnContent>) defaultValue(fields()[6]);
+        record.primaryValue = fieldSetFlags()[5] ? this.primaryValue : (java.lang.CharSequence) defaultValue(fields()[5]);
+        record.changeColumnMap = fieldSetFlags()[6] ? this.changeColumnMap : (java.util.Map<java.lang.CharSequence,com.yt.otter.canal.protocol.avro.ColumnChange>) defaultValue(fields()[6]);
+        record.postChangeContent = fieldSetFlags()[7] ? this.postChangeContent : (java.util.List<com.yt.otter.canal.protocol.avro.ColumnContent>) defaultValue(fields()[7]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
@@ -601,15 +671,15 @@ public class BinlogTO extends org.apache.avro.specific.SpecificRecordBase implem
   private static final org.apache.avro.io.DatumWriter
     WRITER$ = new org.apache.avro.specific.SpecificDatumWriter(SCHEMA$);
 
-   public void writeExternal(java.io.ObjectOutput out)
+  @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
-   private static final org.apache.avro.io.DatumReader
+  private static final org.apache.avro.io.DatumReader
     READER$ = new org.apache.avro.specific.SpecificDatumReader(SCHEMA$);
 
-public void readExternal(java.io.ObjectInput in)
+  @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }

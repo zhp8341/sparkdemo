@@ -34,8 +34,9 @@
       {"name": "opType","type": "string"},//操作类型:UPDATE,INSERT,DELETE
       {"name": "schemaName","type": "string"},//数据库名称
       {"name": "tableName","type": "string"},//表名称
-      {"name": "primary","type": ["null","string"],"default":null},//主键值
-      {"name": "changeColumnMap","type": {"type":"map","values":"ColumnChange"},"default": null},//变动的列map
+      {"name": "primary","type": "string"},//主键值
+      {"name": "primaryValue","type": "string"},//主键值
+      {"name": "changeColumnMap","type": [{"type":"map","values":"ColumnChange"},"null"],"default": null},//变动的列map
       {"name":"postChangeContent","type":{"type":"array","items":"ColumnContent"}}//操作后这行数据的快照值
     ]
   }
