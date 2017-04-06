@@ -3,7 +3,6 @@ package com.demo.kafka.spark.avro;
 
 
 
-
 import org.apache.avro.io.BinaryDecoder;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DecoderFactory;
@@ -14,7 +13,6 @@ import org.apache.kafka.common.serialization.Deserializer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Map;
-
 public class AvroDeserializer<T extends SpecificRecordBase> implements Deserializer<T> {
 
     @Override

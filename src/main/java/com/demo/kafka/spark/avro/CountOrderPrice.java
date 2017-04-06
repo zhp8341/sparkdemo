@@ -31,7 +31,8 @@ import com.yt.otter.canal.protocol.avro.ColumnChange;
 import com.yt.otter.canal.protocol.avro.ColumnContent;
 import com.demo.redis.JedisUtil;
 import com.yt.otter.canal.protocol.avro.BinlogTO;
-public class CountOrderPriceLocal {
+
+public class CountOrderPrice {
 
     private static AtomicLong   orderCount    = new AtomicLong(0);
     private static AtomicLong   totalPrice    = new AtomicLong(0);
@@ -41,33 +42,32 @@ public class CountOrderPriceLocal {
     static Map<String, Object>  kafkaParams   = new HashMap<>();
     static Set<String>          topics        = Collections.singleton(Topic.BINLOGTO.topicName);
 
-    private static final String KEYORDERCOUNT = "spark_orderCount_count_";
-    private static final String KEYTOTALPRICE = "spark_totalPrice_pay_amount_";
+    private static final String KEYORDERCOUNT = "test_orderCount_count_";
+    private static final String KEYTOTALPRICE = "test_totalPrice_pay_amount_";
 
     static {
         kafkaParams.put("bootstrap.servers", "hadoop1:9092,hadoop2:9092");
         kafkaParams.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         kafkaParams.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, AvroDeserializer.class.getName());
-        kafkaParams.put("group.id", "orderstreaming_group");
+        kafkaParams.put("group.id", "CountOrderPrice_test");
         kafkaParams.put("auto.offset.reset", "latest");// 可用参数 latest, earliest, none
         kafkaParams.put("enable.auto.commit", false);
 
- 
     }
 
     public static void main(String[] args) {
-        SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("CountOrderPriceLocal").set("spark.cores.max", "2");
+        //SparkConf conf = new SparkConf().setMaster("spark://hadoop1:7077").setAppName("CountOrderPrice_test").set("spark.cores.max","2");
+        SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("CountOrderPrice_test").set("spark.cores.max","2");
         JavaSparkContext sc = new JavaSparkContext(conf);
         sc.setLogLevel("ERROR");
         JavaStreamingContext jssc = new JavaStreamingContext(sc, Durations.seconds(5));
-   
 
         JavaInputDStream<ConsumerRecord<Object, Object>> orderMsgStream = KafkaUtils.createDirectStream(jssc,
                                                                                                         LocationStrategies.PreferBrokers(),
                                                                                                         ConsumerStrategies.Subscribe(topics,
                                                                                                                                      kafkaParams));
         JavaDStream<BinlogTO> orderDStream = orderMsgStream.map(t2 -> {
-            System.out.println("t2=:"+t2);
+            System.out.println("t2=:" + t2);
             BinlogTO binlogTO = (BinlogTO) t2.value();
             return binlogTO;
         }).cache();
@@ -90,7 +90,7 @@ public class CountOrderPriceLocal {
                             if ("OSD_ID".equals(entry.getKey().toString())) {
                                 System.out.println("OSD_ID="+entry);
                                 ColumnChange columnChange= entry.getValue();
-                                if("6".equals(columnChange.getValue().toString())){//6就是已经支付
+                                if("6".equals(columnChange.getValue())){//6就是已经支付
                                     for (ColumnContent columnContent : list) {
                                         if ("pay_amount".equals(columnContent.getName().toString())) {
                                             totalPrice.addAndGet(Long.parseLong(columnContent.getValue().toString()));
@@ -119,20 +119,19 @@ public class CountOrderPriceLocal {
     }
 
     public static void reloadDBDate(String day) {
-        
-        String orderCountRD = JedisUtil.connectionRedis().get(KEYORDERCOUNT+day);
-        String totalPriceRD = JedisUtil.connectionRedis().get(KEYTOTALPRICE+day);
+        String orderCountRD = JedisUtil.connectionRedis().get(KEYORDERCOUNT + day);
+        String totalPriceRD = JedisUtil.connectionRedis().get(KEYTOTALPRICE + day);
         if (StringUtils.isNotEmpty(orderCountRD)) {
             orderCount.set(0L);
             orderCount.addAndGet(Long.parseLong(orderCountRD));
-        }else{
-            JedisUtil.connectionRedis().set(KEYORDERCOUNT+day, String.valueOf(orderCount.get()));
+        } else {
+            JedisUtil.connectionRedis().set(KEYORDERCOUNT + day, String.valueOf(orderCount.get()));
         }
         if (StringUtils.isNotEmpty(totalPriceRD)) {
             totalPrice.set(0L);
             totalPrice.addAndGet(Long.parseLong(totalPriceRD));
-        }else{
-            JedisUtil.connectionRedis().set(KEYTOTALPRICE+day, String.valueOf(totalPrice.get())); 
+        } else {
+            JedisUtil.connectionRedis().set(KEYTOTALPRICE + day, String.valueOf(totalPrice.get()));
         }
     }
 }
