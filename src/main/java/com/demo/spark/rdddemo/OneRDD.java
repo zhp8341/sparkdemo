@@ -2,10 +2,19 @@
 package com.demo.spark.rdddemo;
 
 import java.util.Arrays;
+import java.util.Comparator;
+//import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+
+import jersey.repackaged.com.google.common.collect.Maps;
+import scala.Function1;
+import scala.Tuple2;
 
 /**
  * [1, 2, 3, 3, 5, 2] 单个RDD简单相关操作
@@ -20,7 +29,10 @@ public class OneRDD {
     private static JavaSparkContext sc;
 
     public static void main(String[] args) throws Exception {
-        List<Integer> list = Arrays.asList(5, 4, 3, 2, 1);// 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1);
+        List<Integer> list = Arrays.asList(5, 4, 3, 2, 1,6,9);// 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1,
+                                                          // 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1,
+                                                          // 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1,
+                                                          // 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1);
         SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("OneRDDDEMO");
         sc = new JavaSparkContext(conf);
         sc.setLogLevel("ERROR");
@@ -28,15 +40,19 @@ public class OneRDD {
         // 原始数据转换成RDD
         JavaRDD<Integer> rdd = sc.parallelize(list);
         System.out.println("原始数据：" + rdd.collect());
-//        distinct(rdd);
-//        filter(rdd);
-//        map(rdd);
-//        count(rdd);
-//        countByValue(rdd);
-//        take(rdd);
-//        top(rdd);
-        reduce(rdd);
-//        foreach(rdd);
+        // distinct(rdd);
+         filter(rdd);
+        // map(rdd);
+        // count(rdd);
+        // countByValue(rdd);
+        // take(rdd);
+        // top(rdd);
+        // reduce(rdd);
+        // foreach(rdd);
+        getmax(rdd);
+        getmin(rdd);
+        
+
 
     }
 
@@ -61,7 +77,7 @@ public class OneRDD {
      * @date 2017年3月28日 上午9:40:07
      */
     public static void filter(JavaRDD<Integer> rdd) {
-        System.out.println("RDD去掉1的元素:" + rdd.filter(v -> v != 1).collect());
+        System.out.println("RDD去掉1的元素:" + rdd.filter(v -> v != null).collect());
     }
 
     /**
@@ -148,5 +164,33 @@ public class OneRDD {
         System.out.print("foreach:");
         rdd.foreach(t -> System.out.print(t));
     }
+
+    /**
+     * 求最大值
+      * @Title: getmax
+      * @param rdd
+      * @throws Exception       
+      * @author zhuhuipei
+      * @date 2017年5月25日 上午11:28:45
+     */
+    public static void getmax(JavaRDD<Integer> rdd) throws Exception {
+        Integer max=  rdd.reduce((v1, v2) -> Math.max(v1, v2));
+        System.out.println("max:"+max);
+    }
+    
+    /**
+     * 求最小值
+      * @Title: getmax
+      * @param rdd
+      * @throws Exception       
+      * @author zhuhuipei
+      * @date 2017年5月25日 上午11:29:20
+     */
+    public static void getmin(JavaRDD<Integer> rdd) throws Exception {
+        Integer min=  rdd.reduce((v1, v2) -> Math.min(v1, v2));
+        System.out.println("min："+min);
+    }
+    
+
 
 }
